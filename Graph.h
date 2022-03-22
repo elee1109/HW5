@@ -1,4 +1,4 @@
-#include <vector>
+
 struct GraphNode {
 	char key;
 	int data; // Not necessary or used for Dijkstra algorithm
