@@ -100,10 +100,16 @@ void TestDestructor(){
 int main(){
 	
 	TestAddNode();
-	TestAddEdge();
-	TestDestructor();
+	//TestAddEdge();
+	//TestDestructor();
 
 	// ... more tests ... 
+	Graph testG= Graph();
+	testG.AddNode('a', 15);
+	testG.AddNode('b', 2);
+	cout<<"Nodes & Data: "<< testG.NodesToString() << endl;
+	cout<<"Nodes: "<< testG.ToString() << endl;
+	
 
 	
 	cout << "ALL TESTS PASSED!" << endl;

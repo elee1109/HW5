@@ -1,3 +1,7 @@
+#ifndef GRAPH_H
+#define GRAPH_H
+#include <string>
+#include <vector>
 
 struct GraphNode {
 	char key;
@@ -17,19 +21,19 @@ class Graph{
 	
 	public:
 		~Graph();
-	
+		
 		GraphNode *AddNode(char key, int data = 0);
 		GraphEdge *AddEdge(GraphNode *gn1, GraphNode *gn2, unsigned int weight = 0);
 		
-		string NodesToString() const;
-		string ToString() const;
+		std::string NodesToString() const;
+		std::string ToString() const;
 
-		static string GraphNodeToString(const GraphNode *gn);
-		static string GraphEdgeToString(const GraphEdge *ge);
+		static std::string GraphNodeToString(const GraphNode *gn);
+		static std::string GraphEdgeToString(const GraphEdge *ge);
 		
 		// https://stackoverflow.com/questions/15106690/how-does-ampersand-in-the-return-type-of-a-function-declaration-work
-		const vector<GraphEdge*>& GetEdges(const GraphNode *gn) const;
-		const vector<GraphNode*>& GetNodes() const;
+		const std::vector<GraphEdge*>& GetEdges(const GraphNode *gn) const;
+		const std::vector<GraphNode*>& GetNodes() const;
 
 		const GraphNode* NodeAt(unsigned int idx) const;
 		
@@ -47,3 +51,4 @@ class Graph{
 		// Your code goes here!
 
 };
+#endif
