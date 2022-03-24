@@ -42,8 +42,6 @@ class Graph{
 		size_t Order() const; // the number of nodes
 
 	private:
-		GraphNode *node;
-		GraphEdge *edge;
 		std::map<GraphNode*, std::vector<GraphEdge*>> currGraph;
 		GraphEdge *nullEdge= new GraphEdge(); //place holder
 

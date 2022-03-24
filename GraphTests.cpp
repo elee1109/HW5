@@ -13,8 +13,8 @@ void TestAddNode(){
 	Graph g = Graph();
 	g.AddNode('a', 15);
 	
-	//cout << "nodes: "  << g.NodesToString() << endl;
-	//cout << "graph: " << g.ToString() << endl;
+	cout << "nodes: "  << g.NodesToString() << endl;
+	cout << "graph: " << g.ToString() << endl;
 	
 	assert(g.NodesToString() == "[(a:15)]");
 	assert(g.ToString() == "a | \n");

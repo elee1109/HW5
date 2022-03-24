@@ -49,15 +49,18 @@ GraphEdge* Graph::AddEdge(GraphNode *gn1, GraphNode *gn2, unsigned int weight){
     
 
 }
+
 string Graph::NodesToString() const{
     string stringNode="[";
     size_t punc= currGraph.size();
     for(auto& n: currGraph){
-        stringNode.append("(");
+        stringNode+=GraphNodeToString(n.first);
+        /**stringNode.append("(");
         stringNode+=(n.first->key);
         stringNode.append(":");
         stringNode.append(to_string(n.first->data));
         stringNode.append(")");
+        */
         if(punc>1) {
             stringNode.append(", ");
             punc--;
@@ -67,6 +70,7 @@ string Graph::NodesToString() const{
     stringNode.append("]");
     return stringNode;
 }
+
 string Graph::ToString() const{
     string graphString;
     for(auto& n: currGraph){
@@ -99,8 +103,13 @@ string Graph::ToString() const{
     return graphString; 
 }
 string Graph::GraphNodeToString(const GraphNode *gn){
-
-    
+    string gnString="";
+    gnString+= "(";
+    gnString+=(gn->key);
+    gnString+=":";
+    gnString+=(to_string(gn->data));
+    gnString+=")";
+    return gnString;
 }
 string Graph::GraphEdgeToString(const GraphEdge *ge){
 
@@ -152,4 +161,3 @@ size_t Graph::Order() const{
     return currGraph.size();
 
 } // the number of nodes
-int main()
