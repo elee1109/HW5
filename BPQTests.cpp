@@ -4,6 +4,11 @@
 #include <cassert>
 
 using namespace std;
+//FOR PRIORITY QUEUE FORMULA: NODE i: left child = 2i+1, right child = 2i+2;
+//priority queue includes --> top() push()-->bubble up pop()--> bubble down empty() size()
+//vector<Dnode> c
+//need to build Update() Contains() ToString()
+//keep order in c vector CONSTANT (already semi sorted) use pop and push not insert and erase
 
 void ContainsTest() {
 	cout << "Testing Contains Helper Method..." << endl;

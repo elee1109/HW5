@@ -2,6 +2,7 @@
 #define GRAPH_H
 #include <string>
 #include <vector>
+#include <map>
 
 struct GraphNode {
 	char key;
@@ -43,6 +44,8 @@ class Graph{
 	private:
 		GraphNode *node;
 		GraphEdge *edge;
+		std::map<GraphNode*, std::vector<GraphEdge*>> currGraph;
+		GraphEdge *nullEdge= new GraphEdge(); //place holder
 
 
 

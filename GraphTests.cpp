@@ -56,7 +56,7 @@ void TestAddEdge(){
 	
 	g.AddEdge(gn1, gn3, 2);
 	//cout << "nodes: "  << g.NodesToString() << endl;
-	//cout << "graph: " << endl << g.ToString() << endl;
+	cout << "graph: " << endl << g.ToString() << endl;
 	assert(g.NodesToString() == "[(a:15), (b:12), (c:9)]");
 	assert(g.ToString() == "a | [(a:15)->(c:9) w:2]\nb | \nc | \n");
 	
@@ -100,15 +100,17 @@ void TestDestructor(){
 int main(){
 	
 	TestAddNode();
-	//TestAddEdge();
+	TestAddEdge();
 	//TestDestructor();
 
 	// ... more tests ... 
 	Graph testG= Graph();
-	testG.AddNode('a', 15);
-	testG.AddNode('b', 2);
-	cout<<"Nodes & Data: "<< testG.NodesToString() << endl;
-	cout<<"Nodes: "<< testG.ToString() << endl;
+	GraphNode *gn1=testG.AddNode('a', 15);
+	GraphNode *gn2=testG.AddNode('b', 2);
+	testG.AddEdge(gn1, gn2, 9);
+
+	//cout<<"Nodes & Data: "<< testG.NodesToString() << endl;
+	cout<< testG.ToString() << endl;
 	
 
 	

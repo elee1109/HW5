@@ -6,9 +6,11 @@
 
 
 using namespace std;
+//FOR PRIORITY QUEUE FORMULA: NODE i: left child = 2i+1, right child = 2i+2;
+//priority queue 
 
-map<GraphNode*, vector<GraphEdge*>> currGraph;
-GraphEdge *nullEdge= new GraphEdge(); //place holder
+
+
 //map<GraphNode, vector<GraphEdge>> currGraph;
 //GraphEdge nullEdge= GraphEdge(); 
 
@@ -68,14 +70,37 @@ string Graph::NodesToString() const{
 string Graph::ToString() const{
     string graphString;
     for(auto& n: currGraph){
+        size_t comma= n.second.size();
+        
         
         graphString+=(n.first->key);
-        graphString.append(" | \n");
+        graphString.append(" | ");
+        cout<< "test print in first loop: " << graphString<< endl;
+        if (n.second.at(0) != nullEdge) {
+            
+            for(auto& edge: n.second){
+                graphString+="[";
+                graphString+="(";
+                graphString+=(edge->from->key);
+                graphString+=":" + to_string(edge->from->data) + ")"+"->(";
+                graphString+= (edge->to->key);
+                graphString+=":" + to_string(edge->to->data) + ") "+"w:"+to_string(edge->weight);
+                graphString+="]";
+                if(comma>1) graphString+=", ";
+                comma--;
+
+            }
+            
+        }
+        graphString.append("\n");
+
     }
+    //cout<<"graph String: " << graphString << endl;
     return graphString; 
 }
 string Graph::GraphNodeToString(const GraphNode *gn){
 
+    
 }
 string Graph::GraphEdgeToString(const GraphEdge *ge){
 
@@ -86,24 +111,36 @@ string Graph::GraphEdgeToString(const GraphEdge *ge){
  * @param gn --> node in graph
  * @return const vector<GraphEdge*>& 
  */
+
 const vector<GraphEdge*>& Graph::GetEdges(const GraphNode *gn) const{
     vector<GraphEdge*> edgesFromNode;
-    if(currGraph.find(gn)!= currGraph.end(){
-        edgesFromNode=currGraph.at(gn)
+    map<const GraphNode*, vector<GraphEdge*>> copyMap;
+    for (auto& n_e: currGraph){
+        copyMap.insert({n_e.first, n_e.second});
     }
+    for(auto& edges: copyMap.at(gn)) edgesFromNode.push_back(edges);
     return edgesFromNode;
 
 
 }
+
+
 const vector<GraphNode*>& Graph::GetNodes() const{
     vector<GraphNode*> nodesinGraph;
     for(auto& n: currGraph) nodesinGraph.push_back(n.first);
+    return nodesinGraph;
 
 
 }
-
+//
 const GraphNode* Graph::NodeAt(unsigned int idx) const{
-
+    const GraphNode* cNode =new GraphNode();
+    vector<const GraphNode*> tempVec;
+    for(auto& node: currGraph) tempVec.push_back(node.first);
+    for(unsigned int i=0; i<tempVec.size(); i++){
+        if(idx==i) cNode=tempVec.at(i);
+    }
+    return cNode;
 }
 		
 size_t Graph::Size() const{
@@ -115,3 +152,4 @@ size_t Graph::Order() const{
     return currGraph.size();
 
 } // the number of nodes
+int main()
