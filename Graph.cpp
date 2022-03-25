@@ -9,13 +9,17 @@ using namespace std;
 //FOR PRIORITY QUEUE FORMULA: NODE i: left child = 2i+1, right child = 2i+2;
 //priority queue 
 
-
-
-//map<GraphNode, vector<GraphEdge>> currGraph;
-//GraphEdge nullEdge= GraphEdge(); 
-
 Graph::~Graph(){
     currGraph.erase(currGraph.begin(), currGraph.end());
+    for(auto& eraseN_E: currGraph){
+        
+        for(auto& eraseEdge: eraseN_E.second){
+            delete eraseEdge->from;
+            delete eraseEdge->to;
+            delete eraseEdge;
+        }
+        delete eraseN_E.first;
+    }
 
 
 }
@@ -55,17 +59,10 @@ string Graph::NodesToString() const{
     size_t punc= currGraph.size();
     for(auto& n: currGraph){
         stringNode+=GraphNodeToString(n.first);
-        /**stringNode.append("(");
-        stringNode+=(n.first->key);
-        stringNode.append(":");
-        stringNode.append(to_string(n.first->data));
-        stringNode.append(")");
-        */
         if(punc>1) {
             stringNode.append(", ");
             punc--;
-        }
-        
+        }  
     }
     stringNode.append("]");
     return stringNode;
@@ -84,11 +81,7 @@ string Graph::ToString() const{
             
             for(auto& edge: n.second){
                 graphString+="[";
-                graphString+="(";
-                graphString+=(edge->from->key);
-                graphString+=":" + to_string(edge->from->data) + ")"+"->(";
-                graphString+= (edge->to->key);
-                graphString+=":" + to_string(edge->to->data) + ") "+"w:"+to_string(edge->weight);
+                graphString+=GraphEdgeToString(edge);
                 graphString+="]";
                 if(comma>1) graphString+=", ";
                 comma--;
@@ -112,7 +105,13 @@ string Graph::GraphNodeToString(const GraphNode *gn){
     return gnString;
 }
 string Graph::GraphEdgeToString(const GraphEdge *ge){
-
+    string geString="(";
+    geString+=(ge->from->key);
+    geString+=":" + to_string(ge->from->data) + ")"+"->(";
+    geString+= (ge->to->key);
+    geString+=":" + to_string(ge->to->data) + ") "+"w:"+to_string(ge->weight);
+    return geString;
+    
 }
 /**
  * @brief gets all edges that branch out from a given node in parameter
@@ -129,14 +128,13 @@ const vector<GraphEdge*>& Graph::GetEdges(const GraphNode *gn) const{
     }
     for(auto& edges: copyMap.at(gn)) edgesFromNode.push_back(edges);
     return edgesFromNode;
-
-
 }
 
 
 const vector<GraphNode*>& Graph::GetNodes() const{
     vector<GraphNode*> nodesinGraph;
     for(auto& n: currGraph) nodesinGraph.push_back(n.first);
+
     return nodesinGraph;
 
 
@@ -154,7 +152,11 @@ const GraphNode* Graph::NodeAt(unsigned int idx) const{
 		
 size_t Graph::Size() const{
     vector<GraphEdge*> allEdges;
-
+    for(auto& edges: currGraph){
+        for(auto& edge: edges.second) allEdges.push_back(edge);
+        
+    }
+    return allEdges.size();
 
 } // the number of edges
 size_t Graph::Order() const{

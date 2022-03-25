@@ -4,6 +4,7 @@
 #include <vector>
 #include <map>
 
+
 struct GraphNode {
 	char key;
 	int data; // Not necessary or used for Dijkstra algorithm
@@ -15,6 +16,7 @@ struct GraphEdge {
 	GraphNode *to;	
 	unsigned int weight;
 };
+
 
 
 class Graph{

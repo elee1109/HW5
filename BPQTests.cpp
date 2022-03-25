@@ -1,7 +1,9 @@
 
-#include "Graph.h"
+
 #include "BetterPriorityQueue.h"
+#include "Graph.h"
 #include <cassert>
+#include <iostream>
 
 using namespace std;
 //FOR PRIORITY QUEUE FORMULA: NODE i: left child = 2i+1, right child = 2i+2;
@@ -9,7 +11,6 @@ using namespace std;
 //vector<Dnode> c
 //need to build Update() Contains() ToString()
 //keep order in c vector CONSTANT (already semi sorted) use pop and push not insert and erase
-
 void ContainsTest() {
 	cout << "Testing Contains Helper Method..." << endl;
 	

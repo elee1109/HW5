@@ -92,6 +92,12 @@ void TestDestructor(){
 	
 	cout << "NO ERRORS.  Use valgrind to check!" << endl << endl;
 }
+void TestGetEdges(){
+
+}
+void TestGetNodes(){
+	
+}
 
 
 // more test functions...
@@ -101,13 +107,15 @@ int main(){
 	
 	TestAddNode();
 	TestAddEdge();
-	//TestDestructor();
+	TestDestructor();
 
 	// ... more tests ... 
 	Graph testG= Graph();
 	GraphNode *gn1=testG.AddNode('a', 15);
 	GraphNode *gn2=testG.AddNode('b', 2);
 	testG.AddEdge(gn1, gn2, 9);
+	testG.GetEdges(gn1);
+	
 
 	//cout<<"Nodes & Data: "<< testG.NodesToString() << endl;
 	cout<< testG.ToString() << endl;
