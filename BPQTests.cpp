@@ -35,29 +35,29 @@ void ContainsTest() {
 
 void UpdateTest() {
 	cout << "Testing Update Helper Method..." << endl;
-	cout<<"1"<< endl;
+	
 	Graph g = Graph();
-	cout<<"2"<< endl;
+	
 	BetterPriorityQueue q;
-	cout<<"3"<< endl;
+	
 	g.AddNode('a');
 	g.AddNode('b');
 	g.AddNode('c');
 	g.AddNode('d');
-	cout<<"4"<< endl;
+	
 	GraphNode *e = g.AddNode('e');
 	GraphNode *f = g.AddNode('f');
-	cout<<"5"<< endl;
+	
 	vector<GraphNode*> nodes = g.GetNodes();
-	cout<< "6" << endl;
+	
 	for(size_t i = 0; i < nodes.size(); i++){
-		//cout<< "hello" << endl;
+		
 		DNode cur;
 		cur.pri = i;
 		cur.node = nodes.at(i);
-		cout << "inserting cur.pri: " << cur.pri << "  node: " << cur.node->key << endl;
+		//cout << "inserting cur.pri: " << cur.pri << "  node: " << cur.node->key << endl;
 		q.push(cur);
-		cout << "size: " << q.size() << endl;
+		//cout << "size: " << q.size() << endl;
 	}
 	
 
@@ -75,11 +75,27 @@ void UpdateTest() {
 	// how you implement the priority queue
 	string soln1 = "[(a: 0), (b: 1), (f: 0), (d: 3), (e: 4), (c: 2)]";
 	string soln2 = "[(f: 0), (b: 1), (a: 0), (d: 3), (e: 4), (c: 2)]";
-	cout<< "my toString: " << q.ToString()<< endl;
+	
 	assert(q.ToString() == soln1 || q.ToString() == soln2);
 	
 	
 	// more tests go here...
+	DNode enode;
+	GraphNode *z=g.AddNode('z', 1);
+	enode.node=z;
+	enode.pri=1;
+	q.Update(enode);
+	//assert(q.ToString()=="[(a: 0), (b: 1), (f: 0), (d: 3), (e: 4), (c: 2), (z: 1)]");
+	while(q.size() >0){
+		q.pop();
+	}
+
+	
+	
+
+
+
+
 	
 	
 	cout << "PASSED!" << endl;

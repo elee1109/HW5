@@ -9,6 +9,7 @@ using namespace std;
 //FOR PRIORITY QUEUE FORMULA: NODE i: left child = 2i+1, right child = 2i+2;
 //priority queue 
 
+//Deconstructor to prevent memory leaks by deleting all pointers.
 Graph::~Graph(){
     currGraph.erase(currGraph.begin(), currGraph.end());
     for(auto& eraseN_E: currGraph){
@@ -20,22 +21,30 @@ Graph::~Graph(){
         }
         delete eraseN_E.first;
     }
+    delete nullEdge;
 
 
 }
+// adds node to the graph hash map.
 GraphNode* Graph::AddNode(char key, int data){
     GraphNode *currNode= new GraphNode();
     
     currNode->key= key;
     currNode->data= data;
-    if(currGraph.find(currNode)==currGraph.end()){
-        currGraph.insert({currNode, {nullEdge}}); //Does not add if Node already exists in graph
-        nodeList.push_back(currNode);
-    }
+
+  
+    currGraph.insert({currNode, {nullEdge}}); //<Graph node pointer, vector of Graph edge pointers>
+    nodeList.push_back(currNode);
+    
+    
     return currNode;
     delete currNode;
     delete nullEdge;
 }
+// Assigns edges to nodes. Assigns all info needed at the "from" node in the hash map. checks to make sure
+//that from and to node already exist within the hashmap
+//if not present excpetion is thrown.
+//use .find(0 to search for node)
 GraphEdge* Graph::AddEdge(GraphNode *gn1, GraphNode *gn2, unsigned int weight){
     GraphEdge *currEdge= new GraphEdge();
     if(currGraph.find(gn1)!=currGraph.end() && currGraph.find(gn2)!=currGraph.end()){ //checks to see if nodes in hashmap, if they are continue
@@ -44,8 +53,15 @@ GraphEdge* Graph::AddEdge(GraphNode *gn1, GraphNode *gn2, unsigned int weight){
         currEdge->to=gn2;
         currEdge->weight= weight;
 
-        if (currGraph.at(currEdge->from).at(0)== nullEdge) currGraph.at(currEdge->from).at(0)= currEdge; //if no edges have been assigned yet add this edge to index 0
-        else currGraph.at(currEdge->from).push_back(currEdge);// if edges have already been assigned add the edge to the list of edges. 
+        if (currGraph.at(currEdge->from).at(0)== nullEdge){
+
+            currGraph.at(currEdge->from).at(0)= currEdge; //if no edges have been assigned yet add this edge to index 0
+            edgeList.push_back(currEdge);
+        }
+        else {
+            currGraph.at(currEdge->from).push_back(currEdge);
+            edgeList.push_back(currEdge);// if edges have already been assigned add the edge to the list of edges. 
+        }
         return currEdge;
         delete currEdge;
     }
@@ -56,7 +72,8 @@ GraphEdge* Graph::AddEdge(GraphNode *gn1, GraphNode *gn2, unsigned int weight){
     
 
 }
-
+//returns a string representation of of the nodes in the hashmap (key:data)
+//calls GraphNodeToString() 
 string Graph::NodesToString() const{
     string stringNode="[";
     size_t punc= currGraph.size();
@@ -70,7 +87,8 @@ string Graph::NodesToString() const{
     stringNode.append("]");
     return stringNode;
 }
-
+//returns entire hashmap represented in string form.
+//calls GraphEdgeToString
 string Graph::ToString() const{
     string graphString;
     for(auto& n: currGraph){
@@ -79,7 +97,7 @@ string Graph::ToString() const{
         
         graphString+=(n.first->key);
         graphString.append(" | ");
-        cout<< "test print in first loop: " << graphString<< endl;
+        
         if (n.second.at(0) != nullEdge) {
             
             for(auto& edge: n.second){
@@ -98,6 +116,7 @@ string Graph::ToString() const{
     //cout<<"graph String: " << graphString << endl;
     return graphString; 
 }
+//returns singular graphnode in string form 
 string Graph::GraphNodeToString(const GraphNode *gn){
     string gnString="";
     gnString+= "(";
@@ -107,6 +126,7 @@ string Graph::GraphNodeToString(const GraphNode *gn){
     gnString+=")";
     return gnString;
 }
+//returns singluar edge in string form 
 string Graph::GraphEdgeToString(const GraphEdge *ge){
     string geString="(";
     geString+=(ge->from->key);
@@ -122,32 +142,17 @@ string Graph::GraphEdgeToString(const GraphEdge *ge){
  * @param gn --> node in graph
  * @return const vector<GraphEdge*>& 
  */
-
+//returns list of edges
 const vector<GraphEdge*>& Graph::GetEdges(const GraphNode *gn) const{
-    vector<GraphEdge*> edgesFromNode;
-    map<const GraphNode*, vector<GraphEdge*>> copyMap;
-    for (auto& n_e: currGraph){
-        copyMap.insert({n_e.first, n_e.second});
-    }
-    for(auto& edges: copyMap.at(gn)) edgesFromNode.push_back(edges);
-    return edgesFromNode;
+    
+    return edgeList;
 }
 
-
+//returns lsit of nodes 
 const vector<GraphNode*>& Graph::GetNodes() const{
     return nodeList;
-    /**
-    vector<GraphNode*> *nodesinGraph = new vector<GraphNode*>;
-    for(auto& n: currGraph) {
-        nodesinGraph.push_back(n.first);
-        cout<<"test getNodes : " <<GraphNodeToString(n.first) << endl;
-    }
-    cout<< "nodesinGraph test : "<< GraphNodeToString(nodesinGraph.at(0)) << endl;
-    return nodesinGraph;
-    delete nodesinGraph;
-    */
 }
-//
+//returns node at given index 
 const GraphNode* Graph::NodeAt(unsigned int idx) const{
     const GraphNode* cNode =new GraphNode();
     vector<const GraphNode*> tempVec;
@@ -157,7 +162,7 @@ const GraphNode* Graph::NodeAt(unsigned int idx) const{
     }
     return cNode;
 }
-		
+//returns the number of edges	
 size_t Graph::Size() const{
     vector<GraphEdge*> allEdges;
     for(auto& edges: currGraph){
@@ -166,7 +171,8 @@ size_t Graph::Size() const{
     }
     return allEdges.size();
 
-} // the number of edges
+} 
+//returns number of nodes
 size_t Graph::Order() const{
     return currGraph.size();
 
