@@ -46,6 +46,7 @@ class Graph{
 	private:
 		std::map<GraphNode*, std::vector<GraphEdge*>> currGraph;
 		GraphEdge *nullEdge= new GraphEdge(); //place holder
+		std::vector<GraphNode*> nodeList;
 
 
 

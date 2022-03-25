@@ -32,8 +32,6 @@ std::greater<DNode>>::priority_queue {
         std::string DNodeToString(DNode dn);
         
     private:
-        std::vector<DNode> c;
-        std::priority_queue<DNode, std::vector<DNode>, std::greater<DNode>> pq;
         
 
 

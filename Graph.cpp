@@ -28,7 +28,10 @@ GraphNode* Graph::AddNode(char key, int data){
     
     currNode->key= key;
     currNode->data= data;
-    if(currGraph.find(currNode)==currGraph.end()) currGraph.insert({currNode, {nullEdge}}); //Does not add if Node already exists in graph
+    if(currGraph.find(currNode)==currGraph.end()){
+        currGraph.insert({currNode, {nullEdge}}); //Does not add if Node already exists in graph
+        nodeList.push_back(currNode);
+    }
     return currNode;
     delete currNode;
     delete nullEdge;
@@ -132,12 +135,17 @@ const vector<GraphEdge*>& Graph::GetEdges(const GraphNode *gn) const{
 
 
 const vector<GraphNode*>& Graph::GetNodes() const{
-    vector<GraphNode*> nodesinGraph;
-    for(auto& n: currGraph) nodesinGraph.push_back(n.first);
-
+    return nodeList;
+    /**
+    vector<GraphNode*> *nodesinGraph = new vector<GraphNode*>;
+    for(auto& n: currGraph) {
+        nodesinGraph.push_back(n.first);
+        cout<<"test getNodes : " <<GraphNodeToString(n.first) << endl;
+    }
+    cout<< "nodesinGraph test : "<< GraphNodeToString(nodesinGraph.at(0)) << endl;
     return nodesinGraph;
-
-
+    delete nodesinGraph;
+    */
 }
 //
 const GraphNode* Graph::NodeAt(unsigned int idx) const{

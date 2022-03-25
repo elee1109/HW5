@@ -96,7 +96,7 @@ void TestGetEdges(){
 
 }
 void TestGetNodes(){
-	
+
 }
 
 
@@ -119,6 +119,8 @@ int main(){
 
 	//cout<<"Nodes & Data: "<< testG.NodesToString() << endl;
 	cout<< testG.ToString() << endl;
+	testG.GetNodes();
+	
 	
 
 	
