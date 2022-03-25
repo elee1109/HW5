@@ -32,6 +32,7 @@ return inBPQ;
 bool BetterPriorityQueue::Update(DNode dn){
     unsigned int nodeIdx=0;
     bool needToUpdate= true;
+    vector<DNode> temp;
     
     for(unsigned int i=0; i < c.size(); i++){
         if(c.at(i)==dn) {
@@ -44,13 +45,23 @@ bool BetterPriorityQueue::Update(DNode dn){
                 needToUpdate= false;
             }
             else {
-                c.erase(c.begin()+nodeIdx, c.begin()+nodeIdx+1);
+                c.at(i).pri=dn.pri;
+                
             }
             break;
             
         }
     }
-    this->push(dn);
+    temp=c;
+    c.erase(c.begin(), c.end());
+    
+    while(temp.size()>0){
+        this->push(temp.front());
+        temp.erase(temp.begin(), temp.begin()+1);
+    }
+    
+    
+    //this->push(dn);
 
     
     //if(inBPQ) c.erase(c.begin()+nodeIdx, c.begin()+nodeIdx+1);
@@ -78,7 +89,7 @@ string BetterPriorityQueue::DNodeToString(DNode dn){
     dnodeString+="(";
     dnodeString+=dn.node->key;
     dnodeString+=": ";
-    dnodeString+=dn.pri;
+    dnodeString+=to_string(dn.pri);
     dnodeString+=")";
     return dnodeString;
 }

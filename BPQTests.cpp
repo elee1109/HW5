@@ -75,7 +75,8 @@ void UpdateTest() {
 	// how you implement the priority queue
 	string soln1 = "[(a: 0), (b: 1), (f: 0), (d: 3), (e: 4), (c: 2)]";
 	string soln2 = "[(f: 0), (b: 1), (a: 0), (d: 3), (e: 4), (c: 2)]";
-	//assert(q.ToString() == soln1 || q.ToString() == soln2);
+	cout<< "my toString: " << q.ToString()<< endl;
+	assert(q.ToString() == soln1 || q.ToString() == soln2);
 	
 	
 	// more tests go here...
