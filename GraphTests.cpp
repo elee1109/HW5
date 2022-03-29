@@ -3,6 +3,7 @@
 #include "Graph.h"
 #include <iostream>
 #include <cassert>
+#include <iostream>
 
 using namespace std;
 
@@ -13,8 +14,8 @@ void TestAddNode(){
 	Graph g = Graph();
 	g.AddNode('a', 15);
 	
-	cout << "nodes: "  << g.NodesToString() << endl;
-	cout << "graph: " << g.ToString() << endl;
+	//cout << "nodes: "  << g.NodesToString() << endl;
+	//cout << "graph: " << g.ToString() << endl;
 	
 	assert(g.NodesToString() == "[(a:15)]");
 	assert(g.ToString() == "a | \n");
@@ -26,7 +27,21 @@ void TestAddNode(){
 	assert(g.NodesToString() == "[(a:15), (b:12)]");
 	assert(g.ToString() == "a | \nb | \n");
 	
-	// more tests....
+	g.AddNode('c', 9);
+	assert(g.NodesToString() == "[(a:15), (b:12), (c:9)]");
+	assert(g.ToString() == "a | \nb | \nc | \n");
+
+
+
+	
+	try{
+		g.AddNode('c', 12);
+		assert(false);
+	}
+	catch( const invalid_argument& e ) {
+	}
+	
+
 	
 	cout << "PASSED!" << endl << endl;
 }
@@ -56,7 +71,7 @@ void TestAddEdge(){
 	
 	g.AddEdge(gn1, gn3, 2);
 	//cout << "nodes: "  << g.NodesToString() << endl;
-	cout << "graph: " << endl << g.ToString() << endl;
+	//cout << "graph: " << endl << g.ToString() << endl;
 	assert(g.NodesToString() == "[(a:15), (b:12), (c:9)]");
 	assert(g.ToString() == "a | [(a:15)->(c:9) w:2]\nb | \nc | \n");
 	
@@ -92,15 +107,94 @@ void TestDestructor(){
 	
 	cout << "NO ERRORS.  Use valgrind to check!" << endl << endl;
 }
+
+
 void TestGetEdges(){
+	cout << "Testing GetEdges..." << endl;
+	Graph g = Graph();
+	GraphNode *gn1 = g.AddNode('a', 15);
+	GraphNode *gn2 = g.AddNode('b', 12);
+	GraphNode *gn3 = g.AddNode('c', 9);
 
+	GraphEdge *e1 = g.AddEdge(gn1, gn3, 2);
+	g.AddEdge(gn3, gn2);
+	GraphEdge *e3 = g.AddEdge(gn1, gn2, 8);
+	
+	
+	vector<GraphEdge*> edges = g.GetEdges(gn1);
+	// cout << "Edges: " << vec_to_string(edges) << endl;
+	vector<GraphEdge*> soln = {e1, e3};
+	assert(edges == soln);
+	
+	cout << "PASSED!" << endl << endl;
 }
+
+
 void TestGetNodes(){
+	cout << "Testing GetNodes..." << endl;
+		
+	Graph g = Graph();
+	GraphNode *gn1 = g.AddNode('a', 15);
+	GraphNode *gn2 = g.AddNode('b', 12);
+	GraphNode *gn3 = g.AddNode('c', 9);
 
+	
+	
+	vector<GraphNode*> nodes = g.GetNodes();
+	// cout << "Edges: " << vec_to_string(edges) << endl;
+	vector<GraphNode*> soln = {gn1, gn2, gn3};
+	assert(nodes == soln);
+	
+	
+	cout << "PASSED!" << endl << endl;
 }
 
 
-// more test functions...
+void TestNodeAt(){
+	cout << "Testing NodeAt..." << endl;
+	
+	
+	Graph g = Graph();
+	g.AddNode('a', 15);
+	GraphNode *gn2 = g.AddNode('b', 12);
+	g.AddNode('c', 9);
+
+	
+	
+	const GraphNode *ans = g.NodeAt(1);
+	assert(ans == gn2);
+	
+	
+	cout << "PASSED!" << endl << endl;
+}
+
+
+void TestSize(){
+	cout << "Testing Size..." << endl;
+	
+	
+	Graph g = Graph();
+	assert(g.Size() == 0);
+	assert(g.Order() == 0);
+	
+	GraphNode *n1 = g.AddNode('a', 15);
+	GraphNode *n2 = g.AddNode('b', 12);
+	g.AddNode('c', 9);
+
+	
+	assert(g.Order() == 3);
+	assert(g.Size()  == 0);
+
+
+	g.AddEdge(n1, n2);
+	assert(g.Order() == 3);
+	assert(g.Size()  == 1);
+
+
+	
+	
+	cout << "PASSED!" << endl << endl;
+}
 
 
 int main(){
@@ -108,20 +202,10 @@ int main(){
 	TestAddNode();
 	TestAddEdge();
 	TestDestructor();
-
-	// ... more tests ... 
-	Graph testG= Graph();
-	GraphNode *gn1=testG.AddNode('a', 15);
-	GraphNode *gn2=testG.AddNode('b', 2);
-	testG.AddEdge(gn1, gn2, 9);
-	testG.GetEdges(gn1);
-	
-
-	//cout<<"Nodes & Data: "<< testG.NodesToString() << endl;
-	cout<< testG.ToString() << endl;
-	testG.GetNodes();
-	
-	
+	TestGetEdges();
+	TestGetNodes();
+	TestNodeAt();
+	TestSize();
 
 	
 	cout << "ALL TESTS PASSED!" << endl;

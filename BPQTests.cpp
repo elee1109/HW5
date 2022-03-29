@@ -1,16 +1,12 @@
 
 
-#include "BetterPriorityQueue.h"
 #include "Graph.h"
+#include "BetterPriorityQueue.h"
 #include <cassert>
 #include <iostream>
 
 using namespace std;
-//FOR PRIORITY QUEUE FORMULA: NODE i: left child = 2i+1, right child = 2i+2;
-//priority queue includes --> top() push()-->bubble up pop()--> bubble down empty() size()
-//vector<Dnode> c
-//need to build Update() Contains() ToString()
-//keep order in c vector CONSTANT (already semi sorted) use pop and push not insert and erase
+
 void ContainsTest() {
 	cout << "Testing Contains Helper Method..." << endl;
 	
@@ -18,14 +14,32 @@ void ContainsTest() {
 	BetterPriorityQueue q;
 	
 	GraphNode *a = g.AddNode('a');
-	DNode n;
-	n.node = a;
-	q.push(n);
-
-	assert(q.Contains(n) == true);
+	g.AddNode('b');
+	g.AddNode('c');
+	g.AddNode('d');
+	g.AddNode('e');
+	g.AddNode('f');
+	vector<GraphNode*> nodes = g.GetNodes();
+	for(size_t i = 0; i < nodes.size(); i++){
+		DNode cur;
+		cur.node = nodes.at(i);
+		//cout << "inserting cur.pri: " << cur.pri << "  node: " << cur.node->key << endl;
+		q.push(cur);
+		//cout << "size: " << q.size() << endl;
+	}
 	
-
-	// more tests go here!
+	
+	// 1st test
+	DNode positive;
+	positive.node = a;
+	assert(q.Contains(positive) == true);
+	
+	// 2nd test
+	DNode negative;
+	assert(q.Contains(negative) == false);
+	
+	// 3rd test
+	assert(q.Contains(positive) == true);
 	
 	
 	cout << "PASSED!" << endl;
@@ -37,21 +51,16 @@ void UpdateTest() {
 	cout << "Testing Update Helper Method..." << endl;
 	
 	Graph g = Graph();
-	
 	BetterPriorityQueue q;
 	
 	g.AddNode('a');
 	g.AddNode('b');
 	g.AddNode('c');
 	g.AddNode('d');
-	
 	GraphNode *e = g.AddNode('e');
 	GraphNode *f = g.AddNode('f');
-	
 	vector<GraphNode*> nodes = g.GetNodes();
-	
 	for(size_t i = 0; i < nodes.size(); i++){
-		
 		DNode cur;
 		cur.pri = i;
 		cur.node = nodes.at(i);
@@ -62,7 +71,8 @@ void UpdateTest() {
 	
 
 	//cout << "q before: " << queue_to_string(q) << endl;
-	
+
+	// Test 1: update a node with pri 0 (normal case)
 	DNode positive;
 	positive.node = f;
 	positive.pri = 0;
@@ -70,32 +80,31 @@ void UpdateTest() {
 	assert(q.Update(positive) == true);
 	cout << "q after: " << q.ToString() << endl;
 
-
-	// Either one of these solutions is correct depending on
-	// how you implement the priority queue
 	string soln1 = "[(a: 0), (b: 1), (f: 0), (d: 3), (e: 4), (c: 2)]";
 	string soln2 = "[(f: 0), (b: 1), (a: 0), (d: 3), (e: 4), (c: 2)]";
+
 	
+	
+	// Test 2: attempt to update with an empty / undefined input
+	DNode negative;
+	assert(q.Update(negative) == false);
+	cout << "q after after: " << q.ToString() << endl;
 	assert(q.ToString() == soln1 || q.ToString() == soln2);
 	
-	
-	// more tests go here...
-	DNode enode;
-	GraphNode *z=g.AddNode('z', 1);
-	enode.node=z;
-	enode.pri=1;
-	q.Update(enode);
-	//assert(q.ToString()=="[(a: 0), (b: 1), (f: 0), (d: 3), (e: 4), (c: 2), (z: 1)]");
-	while(q.size() >0){
-		q.pop();
-	}
 
-	
-	
-
-
-
-
+	// Test 3: update a node with a larger priority
+	// It must behave this way (ignoring larger priorities)
+	// for compatibility with Dijkstra's algorithm
+	DNode negative2;
+	negative2.node = e;
+	negative2.pri = 80;
+	assert(q.Update(negative2) == false);
+	cout << "q after after after: " << q.ToString() << endl;
+	//soln1 = "[(a: 0), (b: 1), (f: 0), (d: 3), (e: 80), (c: 2)]";
+	// some students might have a slightly different order
+	// please ensure the output is a valid priorityqueue as 
+	// implemented by a binary heap
+	assert(q.ToString() == soln1 || q.ToString() == soln2);
 	
 	
 	cout << "PASSED!" << endl;
