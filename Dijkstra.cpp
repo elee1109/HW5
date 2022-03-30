@@ -12,28 +12,46 @@ using namespace std;
 
 
 int dijkstra(const GraphNode *start, const GraphNode *end, Graph *g){
-	int sum=0;
-	int optimal_w= INT_MAX;
+	vector<int> opitmal_ws;
+	int optimalCost=0;
+	DNode startNode;
+	DNode next;
+	next.pri= INT_MAX;
+	DNode prev;
+	next.pri=INT_MAX;
 	BetterPriorityQueue nodeQueue;
-
 	if(start == end) return 0;
-	/**
-	else{
-		bool simpleGraph= false;
-		vector<GraphEdge*> temp=g->GetEdges(start);
-		vector<unsigned int> weights_degree1;
-		for(auto& e: temp){
-			if(e->to==end){
-				simpleGraph= true;
-				if (optimal_w > e->weight) optimal_w= e->weight;
 
+	else{
+		
+		startNode.pri=0;
+		startNode.node=start;
+		nodeQueue.push(startNode);
+		for(unsigned int i=1; i<g->Size(); i++ ){
+			DNode currNode;
+			currNode.node=g->NodeAt(i);
+			currNode.pri=INT_MAX;
+		}
+		while(!nodeQueue.empty()){
+			DNode currNode=nodeQueue.top();
+			currNode.visited=true;
+			vector<GraphEdge*> edgeList=g->GetEdges(currNode.node);
+			unsigned int optimal= INT_MAX;
+			for (auto& edge: edgeList){
+				if(optimal>edge->weight){
+					optimal=edge->weight;
+				
+					next.node= edge->to;
+					next.pri= edge->weight;
+					nodeQueue.Update(next);
+				}	
 			}
+			nodeQueue.pop();
+			optimalCost+=optimal;
+			
 		}
 	}
-	*/
-	else{
-	}
-	return optimal_w;
+	return optimalCost;
 }
 
 
@@ -91,14 +109,14 @@ int DijkstraTest(){
 
 int main(){
 	
-	//int ans = DijkstraTest();
+	int ans = DijkstraTest();
 	Graph *g = new Graph();
 	GraphNode *a=g->AddNode('a', 0);
 	GraphNode *b=g->AddNode('b',0);
-	g->AddEdge(a, b, 69);
+	//g->AddEdge(a, b, 69);
 	
-	g->AddEdge(b, a, 69);
-	int ans = dijkstra(a, b, g);
+	//g->AddEdge(b, a, 69);
+	//int ans = dijkstra(a, b, g);
 	cout << "ans: "  << ans << endl;
 	
 	return 0;

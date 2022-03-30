@@ -15,16 +15,15 @@ Graph g= Graph();
 //check to see if dnode exists in queue
 bool BetterPriorityQueue::Contains(DNode dn){
 //cout<<"hello world" << endl;
-bool inBPQ= false;
+    bool inBPQ= false;
 
-for(unsigned int i=0; i<c.size(); i++){ //fixme
-    
-    if(c.at(i).node==dn.node) {
-        inBPQ= true;
-        break;
+    for(unsigned int i=0; i<c.size(); i++){ //fixme
+        
+        if(c.at(i).node==dn.node) {
+            inBPQ= true;
+            break;
+        }
     }
-    
-}
 
 return inBPQ;
 
@@ -36,42 +35,38 @@ bool BetterPriorityQueue::Update(DNode dn){
     bool needToUpdate= true;
     
     vector<DNode> temp;
-    
-    for(unsigned int i=0; i < c.size(); i++){
-        if(c.at(i)==dn) {
-            
-            
-            if(c.at(i).pri==dn.pri) {
+    DNode emptynode;
+    if(dn == emptynode){
+        return false;
+    }
+    else{
+        for(unsigned int i=0; i < c.size(); i++){
+            if(c.at(i)==dn) {
                 
                 
-                needToUpdate= false;
+                if(c.at(i).pri==dn.pri || c.at(i).pri < dn.pri) {
+                    
+                    
+                    needToUpdate= false;
+                }
+                else {
+                    c.at(i).pri=dn.pri;
+                    
+                }
+                break;
+                
             }
-            else {
-                c.at(i).pri=dn.pri;
-                
-            }
-            break;
             
         }
-        
+        temp=c;
+        c.erase(c.begin(), c.end());
+    
+    
+        while(temp.size()>0){
+            this->push(temp.front());
+            temp.erase(temp.begin(), temp.begin()+1);
+        }
     }
-    temp=c;
-    c.erase(c.begin(), c.end());
-    
-    while(temp.size()>0){
-        this->push(temp.front());
-        temp.erase(temp.begin(), temp.begin()+1);
-    }
-    
-    
-    //this->push(dn);
-
-    
-    //if(inBPQ) c.erase(c.begin()+nodeIdx, c.begin()+nodeIdx+1);
-    //for(unsigned int i=0; i< c.size() ; i++) cout<< g.GraphNodeToString(c.at(i).node) <<" priority: "<< c.at(i).pri<< endl;
-    
-    
-
     return needToUpdate;
 }
 //returuns string rep.
@@ -85,7 +80,7 @@ string BetterPriorityQueue::ToString(){
 
     }
     bpqString+="]";
-    return bpqString;
+    return bpqString; 
 
 }
 //returns string rep

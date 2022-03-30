@@ -3,6 +3,7 @@
 #include <string>
 #include <vector>
 #include <map>
+#include<unordered_map>
 
 
 struct GraphNode {
@@ -48,6 +49,10 @@ class Graph{
 		GraphEdge *nullEdge= new GraphEdge(); //place holder
 		std::vector<GraphNode*> nodeList;
 		std::vector<GraphEdge*> edgeList;
+		//std::vector<GraphEdge*> edgesFromNode;
+
+	private: 
+		
 
 
 

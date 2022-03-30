@@ -28,18 +28,21 @@ Graph::~Graph(){
 // adds node to the graph hash map.
 GraphNode* Graph::AddNode(char key, int data){
     GraphNode *currNode= new GraphNode();
+    if(currGraph.find(currNode)== currGraph.end()){
     
-    currNode->key= key;
-    currNode->data= data;
+        currNode->key= key;
+        currNode->data= data;
 
-  
-    currGraph.insert({currNode, {nullEdge}}); //<Graph node pointer, vector of Graph edge pointers>
-    nodeList.push_back(currNode);
     
-    
+        currGraph.insert(currGraph.end(), {currNode, {nullEdge}}); //<Graph node pointer, vector of Graph edge pointers>
+        nodeList.push_back(currNode);
+    }
+    else{
+        throw exception();
+    }
+        
+        
     return currNode;
-    delete currNode;
-    delete nullEdge;
 }
 // Assigns edges to nodes. Assigns all info needed at the "from" node in the hash map. checks to make sure
 //that from and to node already exist within the hashmap
@@ -145,7 +148,12 @@ string Graph::GraphEdgeToString(const GraphEdge *ge){
 //returns list of edges
 const vector<GraphEdge*>& Graph::GetEdges(const GraphNode *gn) const{
     
-    return edgeList;
+    std::vector<GraphEdge*> *edgesFromNode = new std::vector<GraphEdge*>(0);
+    for(auto& e: edgeList){
+        if(e->from ==gn) edgesFromNode->push_back(e);
+        cout << "hello" << endl;
+    }
+    return *edgesFromNode;
 }
 
 //returns lsit of nodes 
@@ -164,12 +172,8 @@ const GraphNode* Graph::NodeAt(unsigned int idx) const{
 }
 //returns the number of edges	
 size_t Graph::Size() const{
-    vector<GraphEdge*> allEdges;
-    for(auto& edges: currGraph){
-        for(auto& edge: edges.second) allEdges.push_back(edge);
-        
-    }
-    return allEdges.size();
+   
+    return edgeList.size();
 
 } 
 //returns number of nodes
