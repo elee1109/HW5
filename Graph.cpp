@@ -151,7 +151,7 @@ const vector<GraphEdge*>& Graph::GetEdges(const GraphNode *gn) const{
     std::vector<GraphEdge*> *edgesFromNode = new std::vector<GraphEdge*>(0);
     for(auto& e: edgeList){
         if(e->from ==gn) edgesFromNode->push_back(e);
-        cout << "hello" << endl;
+        
     }
     return *edgesFromNode;
 }

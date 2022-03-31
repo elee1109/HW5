@@ -22,13 +22,17 @@ int dijkstra(const GraphNode *start, const GraphNode *end, Graph *g){
 		startNode.pri=0;
 		startNode.node=start;
 		nodeQueue.push(startNode);
-		for(unsigned int i=1; i<g->Size(); i++ ){
+		cout<<"size of graph: " << g->Order() << endl;
+		for(unsigned int i=1; i<g->Order(); i++ ){
 			DNode currNode;
 			currNode.node=g->NodeAt(i);
 			currNode.pri=INT_MAX;
+			nodeQueue.push(currNode);
 		}
+		cout<< nodeQueue.ToString() << endl;
 		while(!nodeQueue.empty()){
 			DNode currNode=nodeQueue.top();
+			nodeQueue.pop();
 			
 			if(currNode.visited==false){
 				currNode.visited=true;
@@ -44,7 +48,9 @@ int dijkstra(const GraphNode *start, const GraphNode *end, Graph *g){
 					
 				} 
 				cout<< nodeQueue.ToString() << endl;
-				nodeQueue.pop();
+				optimalCost=nodeQueue.top().pri;
+				if (nodeQueue.top().node == end) return optimalCost;
+				
 			}
 			
 		}
@@ -68,7 +74,7 @@ int DijkstraTest(){
 	GraphNode *d = g->AddNode('4');
 	GraphNode *e = g->AddNode('5');
 	GraphNode *f = g->AddNode('6');
-	
+
 	g->AddEdge(a, b, 7);
 	g->AddEdge(b, a, 7);
 	g->AddEdge(a, c, 9);
@@ -95,7 +101,7 @@ int DijkstraTest(){
 	
 	cout << g->ToString() << endl;
 	cout<< g->GraphNodeToString(g->NodeAt(1)) << endl;
-	int ans = dijkstra(g->NodeAt(0), g->NodeAt(g->Order()-2), g);
+	int ans = dijkstra(g->NodeAt(0), g->NodeAt(g->Order()-1), g);
 	//assert(ans == 20);
 
 	delete g;
@@ -109,7 +115,7 @@ int DijkstraTest(){
 
 int main(){
 	
-	//int ans = DijkstraTest();
+	int ans = DijkstraTest();
 	Graph *simpleGraph = new Graph();
 	GraphNode *a=simpleGraph->AddNode('a', 0);
 	GraphNode *b=simpleGraph->AddNode('b',0);
@@ -123,7 +129,7 @@ int main(){
 	simpleGraph->AddEdge(d, c, 3);
 	simpleGraph->AddEdge(b, d, 10);
 	simpleGraph->AddEdge(d, b, 10);
-	int ans = dijkstra(a, d, simpleGraph);
+	//int ans = dijkstra(a, d, simpleGraph);
 	cout << "ans: "  << ans << endl;
 	
 	return 0;
