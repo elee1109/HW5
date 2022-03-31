@@ -15,13 +15,8 @@ int dijkstra(const GraphNode *start, const GraphNode *end, Graph *g){
 	vector<int> opitmal_ws;
 	int optimalCost=0;
 	DNode startNode;
-	DNode next;
-	next.pri= INT_MAX;
-	DNode prev;
-	next.pri=INT_MAX;
 	BetterPriorityQueue nodeQueue;
 	if(start == end) return 0;
-
 	else{
 		
 		startNode.pri=0;
@@ -34,25 +29,30 @@ int dijkstra(const GraphNode *start, const GraphNode *end, Graph *g){
 		}
 		while(!nodeQueue.empty()){
 			DNode currNode=nodeQueue.top();
-			currNode.visited=true;
-			vector<GraphEdge*> edgeList=g->GetEdges(currNode.node);
-			unsigned int optimal= INT_MAX;
-			for (auto& edge: edgeList){
-				if(optimal>edge->weight){
-					optimal=edge->weight;
+			
+			if(currNode.visited==false){
+				currNode.visited=true;
 				
-					next.node= edge->to;
-					next.pri= edge->weight;
+				vector<GraphEdge*> edgeList=g->GetEdges(currNode.node);
+				for (auto& edge: edgeList){ //CANT BE GREEDY
+
+					int newWeight=(edge->weight)+ currNode.pri;
+					DNode next;
+					next.node=edge->to;
+					next.pri= newWeight;
 					nodeQueue.Update(next);
-				}	
+					
+				} 
+				cout<< nodeQueue.ToString() << endl;
+				nodeQueue.pop();
 			}
-			nodeQueue.pop();
-			optimalCost+=optimal;
 			
 		}
 	}
+	
 	return optimalCost;
 }
+
 
 
 int DijkstraTest(){
@@ -109,14 +109,21 @@ int DijkstraTest(){
 
 int main(){
 	
-	int ans = DijkstraTest();
-	Graph *g = new Graph();
-	GraphNode *a=g->AddNode('a', 0);
-	GraphNode *b=g->AddNode('b',0);
-	//g->AddEdge(a, b, 69);
-	
-	//g->AddEdge(b, a, 69);
-	//int ans = dijkstra(a, b, g);
+	//int ans = DijkstraTest();
+	Graph *simpleGraph = new Graph();
+	GraphNode *a=simpleGraph->AddNode('a', 0);
+	GraphNode *b=simpleGraph->AddNode('b',0);
+	GraphNode *c=simpleGraph->AddNode('c',0);
+	GraphNode *d=simpleGraph->AddNode('d',0);
+	simpleGraph->AddEdge(a, b, 6);
+	simpleGraph->AddEdge(b, a, 6);
+	simpleGraph->AddEdge(b, c, 9);
+	simpleGraph->AddEdge(c, b, 9);
+	simpleGraph->AddEdge(c, d, 3);
+	simpleGraph->AddEdge(d, c, 3);
+	simpleGraph->AddEdge(b, d, 10);
+	simpleGraph->AddEdge(d, b, 10);
+	int ans = dijkstra(a, d, simpleGraph);
 	cout << "ans: "  << ans << endl;
 	
 	return 0;
