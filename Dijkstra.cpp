@@ -8,9 +8,7 @@
 
 using namespace std;
 
-// This file is not used for part 1
-
-
+//implements dijkstras algorithm. 
 int dijkstra(const GraphNode *start, const GraphNode *end, Graph *g){
 	int optimalCost=0;
 	DNode startNode;
