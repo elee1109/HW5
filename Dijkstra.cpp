@@ -12,7 +12,6 @@ using namespace std;
 
 
 int dijkstra(const GraphNode *start, const GraphNode *end, Graph *g){
-	vector<int> opitmal_ws;
 	int optimalCost=0;
 	DNode startNode;
 	BetterPriorityQueue nodeQueue;
@@ -22,33 +21,33 @@ int dijkstra(const GraphNode *start, const GraphNode *end, Graph *g){
 		startNode.pri=0;
 		startNode.node=start;
 		nodeQueue.push(startNode);
-		cout<<"size of graph: " << g->Order() << endl;
-		for(unsigned int i=1; i<g->Order(); i++ ){
+		cout<<nodeQueue.DNodeToString(nodeQueue.top()) << endl;
+		for(unsigned int i= 1; i<g->Order(); i++ ){
 			DNode currNode;
-			currNode.node=g->NodeAt(i);
-			currNode.pri=INT_MAX;
+			currNode.node= g->NodeAt(i);
+			currNode.pri= INT_MAX;
 			nodeQueue.push(currNode);
 		}
-		cout<< nodeQueue.ToString() << endl;
+		
 		while(!nodeQueue.empty()){
-			DNode currNode=nodeQueue.top();
+			DNode currNode= nodeQueue.top();
 			nodeQueue.pop();
 			
-			if(currNode.visited==false){
-				currNode.visited=true;
+			if(currNode.visited == false){
+				currNode.visited= true;
 				
 				vector<GraphEdge*> edgeList=g->GetEdges(currNode.node);
 				for (auto& edge: edgeList){ //CANT BE GREEDY
 
-					int newWeight=(edge->weight)+ currNode.pri;
+					int new_Weight= (edge->weight)+ currNode.pri;
 					DNode next;
-					next.node=edge->to;
-					next.pri= newWeight;
+					next.node= edge->to;
+					next.pri= new_Weight;
 					nodeQueue.Update(next);
 					
 				} 
-				cout<< nodeQueue.ToString() << endl;
 				optimalCost=nodeQueue.top().pri;
+				cout<<nodeQueue.DNodeToString(nodeQueue.top()) << endl;
 				if (nodeQueue.top().node == end) return optimalCost;
 				
 			}
@@ -70,7 +69,7 @@ int DijkstraTest(){
 	GraphNode *a = g->AddNode('1');
 	GraphNode *c = g->AddNode('3');
 	GraphNode *b = g->AddNode('2');
-	
+
 	GraphNode *d = g->AddNode('4');
 	GraphNode *e = g->AddNode('5');
 	GraphNode *f = g->AddNode('6');
@@ -99,12 +98,19 @@ int DijkstraTest(){
 	g->AddEdge(e, d, 6);
 	
 	
-	cout << g->ToString() << endl;
-	cout<< g->GraphNodeToString(g->NodeAt(1)) << endl;
-	int ans = dijkstra(g->NodeAt(0), g->NodeAt(g->Order()-1), g);
-	//assert(ans == 20);
+	//cout << g->ToString() << endl;
+	//cout<< g->GraphNodeToString(g->NodeAt(1)) << endl;
+	int ans = dijkstra(g->NodeAt(0), g->NodeAt(g->Order()-2), g);
+	assert(ans == 20);
+	
 
-	delete g;
+
+	
+	//int ans2 = dijkstra(g->NodeAt(0), g->NodeAt(g->Order()-1), g);
+	//assert(ans2 == 11);
+	//int ans3 = dijkstra(g->NodeAt(0), g->NodeAt(g->Order()-4), g);
+	//cout<< "ans3: " << ans3 << endl;
+	
 	
 	
 	cout << "passed!" << endl;
